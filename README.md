@@ -7,6 +7,10 @@ Datadipity provides a simple yet powerful Javascript API for connecting and comm
 
 The Javascript API is the core target for Datadipity development. Datadipity was built by front-end developers for front-end developers so more complex and fully integrated software products could be developed with simple tools such as HTML5 and Javascript. When using Javascript with Datadipity, software becomes highly scalable and very easy to maintain. The core functionality of an App built with Datadipity can reside in a single Javascript file and a single HTML file.
 
+Raw NML.js API
+==============
+https://github.com/clickslide/NML.js/wiki/NML.js-API
+
 Documentation
 ============
 https://clickslide.atlassian.net/wiki/display/DATADIPITY/Datadipity+Home
