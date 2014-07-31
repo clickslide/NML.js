@@ -19,10 +19,10 @@
 
     <h1 class="page-title">Source: NML.js</h1>
 
-    
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
@@ -58,54 +58,54 @@ var NML = NML || {};
     //------------------------------------------------------------
     NML.prototype = {
 
-        /** 
+        /**
          * @description Was NML() created?
-         * @protected 
+         * @protected
          * @memberOf NML
          * @property {boolean} created
          * @inner
          */
         created: false,
 
-        /** 
-         * @description The URL for the API 
-         * @protected 
+        /**
+         * @description The URL for the API
+         * @protected
          * @memberOf NML
          * @property {string} BaseUrl
          * @inner
          */
         BaseUrl: null,
 
-        /** 
+        /**
          * @description The ID of the home page as described in the NML document
-         * @protected 
+         * @protected
          * @memberOf NML
          * @property {string|number} homePageId
          * @inner
          */
         homePageId: null,
-        
-        /** 
+
+        /**
          * @description Track if the app is running on phonegap or browser
          * @property {boolean} isGap
          * @memberOf NML
-         * @public 
+         * @public
          * @inner
          */
         isGap: false,
 
-        /** 
-         * @description A function used to handle NML data when it is returned from the server. 
-         * @public 
+        /**
+         * @description A function used to handle NML data when it is returned from the server.
+         * @public
          * @memberOf NML
          * @callback onGetData
          * @inner
-         */ 
+         */
         onGetData: null,
 
-        /** 
+        /**
          * @description Whether or not search is enabled in the API
-         * @private 
+         * @private
          * @memberOf NML
          * @property search
          */
@@ -167,7 +167,7 @@ var NML = NML || {};
          * @function setSession
          * @public
          * @memberOf NML
-         * @return {string} BaseUrl - The base url variable
+         * @return null
          * @inner
          */
         setSession: function (sess) {
@@ -179,7 +179,7 @@ var NML = NML || {};
          * @function getSession
          * @public
          * @memberOf NML
-         * @return {string} BaseUrl - The base url variable
+         * @return {string} Session - The Session ID
          * @inner
          */
         getSession: function () {
@@ -265,7 +265,7 @@ var NML = NML || {};
          * @inner
          */
         onRegister: function (data, _nml) {
-            // default callback for Login 
+            // default callback for Login
             console.log(data);
 
             if (data.success === true || data.success == "true") {
@@ -363,7 +363,7 @@ var NML = NML || {};
          * @inner
          */
         onLogin: function (data) {
-            // default callback for Login 
+            // default callback for Login
             if (data.success === true || data.success === "true") {
                 // save the session
                 //window.localStorage.sessid = data.session.id;
