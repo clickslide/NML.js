@@ -10,3 +10,7 @@ The Javascript API is the core target for Datadipity development. Datadipity was
 Documentation
 ============
 https://clickslide.atlassian.net/wiki/display/DATADIPITY/Datadipity+Home
+
+Build an App With Twitter & Gracenote using NML.js
+==================================================
+https://clickslide.atlassian.net/wiki/display/DATADIPITY/Building+an+App+With+Twitter+and+Gracenote
