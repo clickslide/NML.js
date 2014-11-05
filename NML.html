@@ -2,22 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: NML.js</title>
+    <title>NML.js API</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="../scripts/prettify/prettify.js"> </script>
+    <script src="../scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/jsdoc-default.css">
 </head>
 
 <body>
 
 <div id="main">
 
-    <h1 class="page-title">Source: NML.js</h1>
+    <h1 class="page-title"><a href="https://datadipity.com" title="Datadipity"><img src="https://datadipity.com/images/Datadipitylogo.jpg" alt="Datadipity.com"/></a></h1>
+
+
+
+
+
+<section>
+
+<header>
+    <h2>
+    NML.js
+    </h2>
+
+</header>
 
 
 
@@ -68,13 +81,81 @@ var NML = NML || {};
         created: false,
 
         /**
-         * @description The URL for the API
+         * @description The URL for the API. This variable is used internally. It can be set using the method setBaseUrl() of the NML object.
          * @protected
          * @memberOf NML
          * @property {string} BaseUrl
          * @inner
          */
         BaseUrl: null,
+
+        /**
+         * @description This is a reference object to the NML object created in the app. This helps with scope and referencing.
+         * @protected
+         * @memberOf NML
+         * @property {NML} appnml
+         * @inner
+         */
+        appnml: null,
+
+        /**
+         * @description A reference to the app config array.
+         * @protected
+         * @memberOf NML
+         * @property {array} appconfig
+         * @inner
+         */
+        appconfig: [],
+
+        /**
+         * @description Set the config for the app and save it as a serialized string using JSON.stringify to the localstorage.
+         * @function setAppConfig
+         * @memberOf NML
+         * @public
+         * @param {object} _config - pass the appconfig object from the App
+         * @return null
+         * @inner
+         */
+        setAppConfig:function(_config){
+            this.appconfig = _config;
+            window.localStorage.appconfig = JSON.stringify(_config);
+        },
+
+        /**
+         * @description This is a reference to a method in the A
+         * @protected
+         * @memberOf NML
+         * @property {function} handleLogin
+         * @inner
+         */
+        handleLogin: null,
+
+        /**
+         * @description After login, load the first API data from the appconfig.
+         * @protected
+         * @memberOf NML
+         * @property {boolean} initWithData
+         * @inner
+         */
+        initWithData: true,
+
+        /**
+         * @description Keeps track of which API we are logged into.
+         * @protected
+         * @memberOf NML
+         * @property {integer} loginIndex
+         * @inner
+         */
+        loginIndex: 0,
+
+        /**
+         * @description A custom callback after loadDialogs completes to be triggered in the App instead of the built in methods.
+         * @protected
+         * @memberOf NML
+         * @property {function} loadDialogCallback
+         * @inner
+         */
+        loadDialogCallback: null,
 
         /**
          * @description The ID of the home page as described in the NML document
@@ -170,35 +251,45 @@ var NML = NML || {};
          * @return null
          * @inner
          */
-        setSession: function (sess) {
-            window.localStorage.sessid = sess;
-            //self.Session = sess;
+        setSession: function (sess, index) {
+            try{
+                console.log(JSON.stringify(window.localStorage));
+                var a = JSON.parse(window.localStorage.appconfig);
+                a[index].sessid = sess;
+                window.localStorage.appconfig = JSON.stringify(a);
+            }catch(err){
+                console.log("ERROR");
+                console.log(err);
+            }
         },
         /**
          * @description get the session ID from local storage.
          * @function getSession
          * @public
          * @memberOf NML
-         * @return {string} Session - The Session ID
+         * @return {string} Session - The session ID
          * @inner
          */
-        getSession: function () {
-            return window.localStorage.sessid;
+        getSession: function (index) {
+            var a = JSON.parse(window.localStorage.appconfig);
+            return a[index].sessid;
+            //return window.localStorage.sessid[index];
+            //return this.appconfig[index].sessid;
         },
 
         /**
-     * @function Register
-     * @memberOf NML
-     * @public
-     * @description Registration and Login use similar functionality. New users and possibly returning users will have to authorize API services. Once logged in or registered, if authorization is required, Clickslide will return a "registerApis=true" in its JSON response. The manageAuthRedirect Method in the example handles this behavior. It is altered slightly in Cordova Phonegap.
-     * @param {string} userName - Name of user to register
-     * @param {string} userEmail - Email address of the user ro register
-     * @param {string} userPassword1 - Email address of the user to register
-     * @param {string} userPassword2 - Verify the user password
-     * @param {function} callback - a custom function to override the onRegister method. This method will take a data object as an argument.
-     * @return null
-     * @inner
-     */
+         * @function Register
+         * @memberOf NML
+         * @public
+         * @description Registration and Login use similar functionality. New users and possibly returning users will have to authorize API services. Once logged in or registered, if authorization is required, Clickslide will return a "registerApis=true" in its JSON response. The manageAuthRedirect Method in the example handles this behavior. It is altered slightly in Cordova Phonegap.
+         * @param {string} userName - Name of user to register
+         * @param {string} userEmail - Email address of the user ro register
+         * @param {string} userPassword1 - Email address of the user to register
+         * @param {string} userPassword2 - Verify the user password
+         * @param {function} callback - a custom function to override the onRegister method. This method will take a data object as an argument.
+         * @return null
+         * @inner
+         */
         Register: function (userName, userEmail, userPassword1, userPassword2, callback) {
             var next = null;
             if (callback !== null) {
@@ -267,10 +358,10 @@ var NML = NML || {};
         onRegister: function (data, _nml) {
             // default callback for Login
             console.log(data);
-
+            // TODO? validate NML has been instantiated?
             if (data.success === true || data.success == "true") {
 
-                _nml.setSession(data.session.id);
+                _nml.setSession(data.session.id, this.loginIndex);
 
                 if (data.registerApis === true || data.registerApis == "true") {
 
@@ -291,19 +382,23 @@ var NML = NML || {};
          * @return null
          * @inner
          */
-        Logout: function (sessid, callback) {
+        Logout: function (sessid, callback, _nml) {
+            console.log(this.appnml);
             var next = null;
-            var nml = this;
             if (callback !== null) {
                 // pass the nml{} object around
                 next = callback;
             } else {
                 next = this.onLogin;
             }
-
+            this.appnml.setBaseUrl(
+                this.appconfig[this.loginIndex].url,
+                "https",
+                "datadipity.com"
+            );
             $.ajax({
                 type: "GET",
-                url: this.BaseUrl + "/login/logout.json?PHPSESSID=" + sessid,
+                url: this.appnml.BaseUrl + "/login/logout.json?PHPSESSID=" + sessid,
                 crossDomain: true,
                 success: function (data) {
                     next(data);
@@ -326,23 +421,29 @@ var NML = NML || {};
          * @return null
          * @inner
          */
-        Login: function (userEmail, userPassword, callback) {
+        Login: function (userEmail, userPassword, callback, _nml) {
             var next = null;
             if (callback !== null) {
                 next = callback;
             } else {
                 next = this.onLogin;
             }
-            console.log("Getting: " + this.BaseUrl + "/login/doLogin.json");
+
+            var appnml = this.appnml;
+           // console.log(this);
+            //console.log("Getting: " + _nml.BaseUrl + "/login/doLogin.json");
             $.ajax({
                 type: "GET",
-                url: this.BaseUrl + "/login/doLogin.json",
+                url: _nml.BaseUrl + "/login/doLogin.json",
                 crossDomain: true,
                 data: {
                     email: userEmail,
                     password: userPassword
                 },
                 success: function (data) {
+                    console.log(data);
+                    // Set Session Variable Here to maintain scope
+                    //appnml.setSession(data.session.id);
                     next(data);
                 },
                 error: function (res, status, err) {
@@ -361,13 +462,21 @@ var NML = NML || {};
          * @summary This method will redirect to the API authentication page if the logged in user needs to authenticate with any APIs used in the application.
          * @return null
          * @inner
+         * @TODO: somehow tie
          */
         onLogin: function (data) {
             // default callback for Login
+
+            console.log(JSON.stringify(data));
             if (data.success === true || data.success === "true") {
                 // save the session
+                console.log("APPNML - " + this.loginIndex);
                 //window.localStorage.sessid = data.session.id;
-                this.setSession(data.session.id);
+                //console.log(this.app);
+                console.log("INDEX: "  + this.loginIndex);
+                console.log("SESSID: " + data.session.id);
+                this.setSession(data.session.id, this.loginIndex);
+                console.log(this.getSession(this.loginIndex));
             }
         },
 
@@ -382,7 +491,7 @@ var NML = NML || {};
          * @return null
          * @inner
          */
-        add: function (action, pagesType, callback) {
+        add: function (action, pagesType, callback, index) {
             var next = null;
             if (callback !== null) {
                 next = callback;
@@ -391,8 +500,10 @@ var NML = NML || {};
             }
             console.log(next);
             // post request to Datadipity.com
+            this.setBaseUrl(this.appconfig[index].url, "https", "datadipity.com");
+
             $.get(
-                this.BaseUrl + "/" + pagesType + ".xml?_method=post&amp;_action=" + action + "&amp;PHPSESSID=" + this.getSession()
+                this.BaseUrl + "/" + pagesType + ".xml?_method=post&amp;_action=" + action + "&amp;PHPSESSID=" + this.getSession(index)
             ).done(next);
         },
 
@@ -404,10 +515,11 @@ var NML = NML || {};
          * @param {string} action - This is an NML String representing the resource to add. This resource will be parsed and will trigger the API events on the server side. &lt;BasicPage>...&lt;/BasicPage>
          * @param {string} pageType - A NML page type in lowercase and plural: basicpages, listpages, etc. It depends on the type of page you are posting to the ListPage and which type of page it accepts.
          * @param {asyncCallback} callback - A custom callback function to override the default. This takes an NML object as an argument.
+         * @param {integer} index - the item to use from AppConfig
          * @return null
          * @inner
          */
-        update: function (action, pageType, callback) {
+        update: function (action, pageType, callback, index) {
             var next = null;
             if (callback !== null) {
                 next = callback;
@@ -416,6 +528,11 @@ var NML = NML || {};
             }
             // GET put request to Datadipity.com
             // post request to Datadipity.com
+            this.setBaseUrl(
+                this.appconfig[index].url,
+                "https",
+                "datadipity.com"
+            );
             $.get(
                 this.BaseUrl + "/" + pageType + ".xml?_method=put&amp;_action=" + action + "&amp;PHPSESSID=" + this.getSession()
             ).done(next);
@@ -428,10 +545,11 @@ var NML = NML || {};
          * @public
          * @param {string} pageType - the type of page eg: basicpages, listpages, linkpages, etc.
          * @param {string} pageId - Required to execute a delete on a resource
+         * @param {integer} index - the item to use from AppConfig
          * @return null
          * @inner
          */
-        remove: function (pageType, pageId, callback) {
+        remove: function (pageType, pageId, callback, index) {
             var next = null;
             if (callback !== null) {
                 next = callback;
@@ -439,6 +557,11 @@ var NML = NML || {};
                 next = this.processPageData;
             }
             // GET delete request to Datadipity.com using XML
+            this.setBaseUrl(
+                this.appconfig[index].url,
+                "https",
+                "datadipity.com"
+            );
             $.get(
                 this.BaseUrl + "/" + pageType + "/" + pageId + ".xml?_method=delete&amp;PHPSESSID=" + this.getSession()
             ).done(next);
@@ -455,18 +578,23 @@ var NML = NML || {};
          * @param {string} pageType - basicpages, listpages, linkpages, etc.
          * @param {string} pageId - The ID parameter from the @attributes.id element
          * @param {string} pageUrl - This will override using pageType/pageId
+         * @param {integer} index - the item to use from AppConfig
          * @todo More testing needs to be done using individual page types.
          * @return null
          * @inner
          */
-        get: function (callback, withUpdate, postparams, pageType, pageId, pageUrl) {
+        get: function (index, callback, withUpdate, postparams, pageType, pageId, pageUrl) {
             var next = null;
             if (callback) {
                 next = callback;
             } else {
                 next = null;
             }
-
+            this.setBaseUrl(
+                this.appconfig[index].url,
+                "https",
+                "datadipity.com"
+            );
             // get request to Datadipity.com
             var reqUrl = this.BaseUrl;
             try {
@@ -491,13 +619,16 @@ var NML = NML || {};
             if (pageUrl !== null &amp;&amp; pageUrl !== undefined) {
                 reqUrl = this.BaseUrl + "/" + pageUrl.toLowerCase();
             }
+            console.log("getting Session");
+            console.log(index);
 
+            var sessid = this.getSession(index);
             // include the session
-            if (this.getSession() != "null" &amp;&amp; this.getSession() != "undefined" &amp;&amp; this.getSession() !== null &amp;&amp; this.getSession() !== undefined) {
+            if (sessid != "null" &amp;&amp; sessid != "undefined" &amp;&amp; sessid !== null &amp;&amp; sessid !== undefined) {
                 if (withUpdate === true) {
-                    reqUrl += ".json?update&amp;PHPSESSID=" + this.getSession();
+                    reqUrl += ".json?update&amp;PHPSESSID=" + sessid;
                 } else {
-                    reqUrl += ".json?PHPSESSID=" + this.getSession();
+                    reqUrl += ".json?PHPSESSID=" + sessid;
                 }
             } else {
                 if (withUpdate === true) {
@@ -560,24 +691,37 @@ var NML = NML || {};
          * @memberOf NML
          * @public
          * @param {function} callback - A function to trigger once the Login/Register/Auth dialogs have been loaded from the template files.
+         * @param {NML} appnml - A reference to the NML Object created in the app.
          * @return null
          * @inner
          */
-        loadDialogs: function (callback) {
-            var _nml = this;
+        loadDialogs: function (callback, appnml, appconfig) {
+            // var _nml = this;
+            this.appnml = appnml;
+            this.appconfig = appconfig;
+            if (window.localStorage.appconfig !== null &amp;&amp; window.localStorage.appconfig !== undefined) {
+                window.localStorage.appconfig = window.localStorage.appconfig;
+            } else {
+                window.localStorage.appconfig = JSON.stringify(appconfig);
+            }
+            this.loadDialogCallback = callback;
             console.log("Loading Dialogs");
             if ($("#login-register-auth")) {
                 $.get("templates/jsviews/login-register-auth.html").done(function (data) {
+                    console.log("data got");
+                    console.log(data);
                     $("#login-register-auth").html(data);
                     if ($("#loading-progress")) {
                         $.get("templates/jsviews/loading-progress.html").done(function (data) {
                             $("#loading-progress").html(data);
                             // Set Login/Register Form Listeners
                             $("#loginForm").on("submit", function (evt) {
-                                _nml.handleLoginFormSubmit(evt, _nml);
+                                evt.preventDefault();
+                                appnml.handleLoginFormSubmit(evt, appnml);
                             });
                             $("#registerForm").on("submit", function (evt) {
-                                _nml.handleRegisterFormSubmit(evt, _nml);
+                                evt.preventDefault();
+                                appnml.handleRegisterFormSubmit(evt, appnml);
                             });
                             callback();
                         });
@@ -604,14 +748,31 @@ var NML = NML || {};
             if (data.session !== null &amp;&amp; data.session !== undefined &amp;&amp; data.session.id !== "undefined" &amp;&amp; data.session !== "null") {
                 $("#loadertext").html("Loading Tweets...");
                 _nml.onLogin(data);
+                // TODO: This may not quite be correct on the server.
                 if (data.registerApis === true || data.registerApis === "true") {
                     _nml.manageAuthRedirect(_nml);
                     //nml.onRegister(data)
                 } else {
                     // if we don't need to authorize APIs
                     console.log("Getting Data");
+                    if
+                        (_nml.loginIndex &lt; (_nml.appconfig.length - 1)) {
+                        // set Index ++
+                        _nml.loginIndex++;
+                        _nml.loadDialogs(_nml.loadDialogCallback, _nml, _nml.appconfig);
 
-                    _nml.get(_nml.onGetData, true);
+                    } else {
+                       // _nml.get(_nml.onGetData, true);
+                        // start GUI
+                        if (_nml.initWithData === true) {
+                            $("#loader").modal("toggle");
+                            _nml.get(0, _nml.onGetData, true);
+                        } else {
+                            console.log("Gettign Data");
+                            console.log(_nml);
+                            _nml.onGetData();
+                        }
+                    }
                 }
             } else {
                 // add message to login modal
@@ -633,23 +794,35 @@ var NML = NML || {};
             evt.preventDefault();
             var email = $("#loginEmail").val();
             var password = $("#loginPassword").val();
+            _nml.setBaseUrl(_nml.appconfig[_nml.loginIndex].url, 'https', 'datadipity.com');
+            console.log(_nml);
             $("#loginRegister").modal("toggle");
             $("#loginRegister").bind("hidden.bs.modal", function (evt) {
                 $("#loginRegister").unbind("hidden.bs.modal");
                 $("#loadertext").html("Logging In...");
                 $("#loader").modal("toggle");
                 console.log(_nml);
-                if (_nml.getSession() === undefined || _nml.getSession() === "undefined") {
+                if (_nml.getSession(_nml.loginIndex) === undefined || _nml.getSession(_nml.loginIndex) === "undefined") {
                     console.log("Wrong Session ID");
-                    _nml.setSession(null);
+                    _nml.setSession(null, _nml.loginIndex);
                     _nml.Login(email, password, function (data) {
-                        _nml.onLoginOrRegister(data, _nml);
+                        if (_nml.handleLogin !== null) {
+                            _nml.handleLogin(data);
+                        } else {
+                            _nml.onLoginOrRegister(data, _nml);
+                        }
                     });
                 } else {
-                    _nml.Logout(_nml.getSession(), function (data) {
-                        _nml.setSession(null);
+                    console.log(_nml);
+                    _nml.Logout(_nml.getSession(_nml.loginIndex), function (data) {
+                        _nml.setSession(null, _nml.loginIndex);
+                        console.log("Logging In afgter logout");
                         _nml.Login(email, password, function (nData) {
-                            _nml.onLoginOrRegister(nData, _nml);
+                            if (_nml.handleLogin !== null) {
+                                _nml.handleLogin(nData);
+                            } else {
+                                _nml.onLoginOrRegister(nData, _nml);
+                            }
                         });
                     });
                 }
@@ -692,17 +865,20 @@ var NML = NML || {};
             // show redirect modal
             $("#loader").bind("hidden.bs.modal", function (evt) {
                 $("#loader").unbind("hidden.bs.modal");
-                $("#authlink").attr("href", _nml.BaseUrl + "/register/apis?PHPSESSID=" + _nml.getSession());
+                $("#authlink").attr("href", _nml.BaseUrl + "/register/apis?PHPSESSID=" + _nml.getSession(_nml.loginIndex));
+                console.log("OPEN AUTH LINK: " + _nml.BaseUrl + "/register/apis?PHPSESSID=" + _nml.getSession(_nml.loginIndex) );
                 $("#authlink").click(function (evt) {
                     evt.preventDefault();
                     var url = evt.currentTarget.href;
                     console.log(url);
 
-                    var popup = window.open(url, "_blank", "location=yes,closebuttoncaption=done,clearcache=yes,clearsessioncache=yes");
+                    var popup = window.open(url, "_blank", "location=yes");
+                    console.log("IS GAP? " + _nml.isGap);
                     if (!_nml.isGap) {
                         // do this in browser
                         var timer = setInterval(function (evt) {
                             if (popup.closed) {
+                                console.log("Popup Closed");
                                 clearInterval(timer);
                                 $("#generic").bind(
                                     "hidden.bs.modal",
@@ -710,8 +886,26 @@ var NML = NML || {};
                                         $("#generic").unbind(
                                             "hidden.bs.modal"
                                         );
-                                        $("#loader").modal("toggle");
-                                        _nml.get(_nml.onGetData, true);
+                                        console.log("LOgin Index: " + _nml.loginIndex);
+                                        console.log("Login Length: " + _nml.appconfig.length);
+                                        // login the next API
+                                        if (_nml.loginIndex &lt; (_nml.appconfig.length - 1)) {
+                                            // set Index ++
+                                            _nml.loginIndex++;
+                                            _nml.loadDialogs(_nml.loadDialogCallback, _nml, _nml.appconfig);
+
+                                        } else {
+
+                                            // start GUI
+                                            if (_nml.initWithData === true) {
+                                                $("#loader").modal("toggle");
+                                                _nml.get(_nml.onGetData, true);
+                                            } else {
+                                                console.log("Gettign Data");
+                                                console.log(_nml);
+                                                _nml.onGetData();
+                                            }
+                                        }
                                     }
                                 );
                                 $("#generic").modal("toggle");
@@ -720,14 +914,33 @@ var NML = NML || {};
                     } else {
                         // do this in phonegap
                         popup.addEventListener("exit", function () {
+                            //clearInterval(timer);
                             $("#generic").bind(
                                 "hidden.bs.modal",
                                 function (evt) {
                                     $("#generic").unbind(
                                         "hidden.bs.modal"
                                     );
-                                    $("#loader").modal("toggle");
-                                    _nml.get(_nml.onGetData, true);
+                                    console.log("LOgin Index: " + _nml.loginIndex);
+                                    console.log("Login Length: " + _nml.appconfig.length);
+                                    // login the next API
+                                    if (_nml.loginIndex &lt; (_nml.appconfig.length - 1)) {
+                                        // set Index ++
+                                        _nml.loginIndex++;
+                                        _nml.loadDialogs(_nml.loadDialogCallback, _nml, _nml.appconfig);
+
+                                    } else {
+
+                                        // start GUI
+                                        if (_nml.initWithData === true) {
+                                            $("#loader").modal("toggle");
+                                            _nml.get(_nml.onGetData, true);
+                                        } else {
+                                            console.log("Gettign Data");
+                                            console.log(_nml);
+                                            _nml.onGetData();
+                                        }
+                                    }
                                 }
                             );
                             $("#generic").modal("toggle");
@@ -739,6 +952,7 @@ var NML = NML || {};
             });
             $("#loader").modal("toggle");
         },
+
         /**
          * @private
          * @description Extract the parentPage (if it exists) using a page ID
@@ -753,7 +967,8 @@ var NML = NML || {};
             // TODO: make this work
         }
     };
-})();</code></pre>
+})();
+</code></pre>
         </article>
     </section>
 
@@ -763,20 +978,13 @@ var NML = NML || {};
 </div>
 
 <nav>
-    <ul>
-        <li>
-            <a href="index.html">NML.js API</a>
-        </li>
-        <li>
-            <a class="active" href="NML.js.html">NML.js Source</a>
-        </li>
-    </ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="NML.html">NML</a></li></ul><h3>Namespaces</h3><ul></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Thu Jul 31 2014 11:31:50 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Sun Oct 26 2014 18:52:00 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>
