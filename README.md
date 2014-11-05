@@ -9,7 +9,7 @@ The Javascript API is the core target for Datadipity development. Datadipity was
 
 Raw NML.js API
 ==============
-http://clickslide.github.io/NML.js/
+http://nml.io
 
 Documentation
 ============
