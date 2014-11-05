@@ -9,7 +9,7 @@ The Javascript API is the core target for Datadipity development. Datadipity was
 
 Raw NML.js API
 ==============
-https://github.com/clickslide/NML.js/wiki/NML.js-API
+http://clickslide.github.io/NML.js/
 
 Documentation
 ============
@@ -18,3 +18,7 @@ https://clickslide.atlassian.net/wiki/display/DATADIPITY/Datadipity+Home
 Build an App With Twitter & Gracenote using NML.js
 ==================================================
 https://clickslide.atlassian.net/wiki/display/DATADIPITY/Building+an+App+With+Twitter+and+Gracenote
+
+NML.js Starter App with Leaflet Maps
+====================================
+https://github.com/clickslide/NML-Starter-App
