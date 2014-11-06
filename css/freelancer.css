@@ -42,15 +42,24 @@ a.active {
     color: #18bc9c;
 }
 
+h2, h3.subsection-title {
+    font-size: 4em;
+}
+
+.type-signature {
+    color:#669933;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     font-family: csread,sans-serif;
     font-weight: 700;
+
 }
 
 hr.star-light,
@@ -97,8 +106,8 @@ hr.star-primary:after {
 }
 
 header {
-    text-align: center;
-    color: #fff;
+    /* text-align: center; */
+   /* color: #fff; */
 /*    background: #18bc9c;*/
 }
 
@@ -110,6 +119,10 @@ header .container {
 header img {
     display: block;
     margin: 0 auto 20px;
+}
+
+header .intro-text {
+    text-align:center;
 }
 
 header .intro-text .name {
@@ -470,4 +483,27 @@ footer .footer-below {
 }
 p, a, div, span, input, select, textarea {
     font-family:csread;
+}
+
+dl dd {
+    padding-left:20px;
+}
+
+table.params {
+    border: 1px solid #333;
+}
+table.params tr td {
+    padding :2px;
+    border:1px solid #ccc;
+}
+
+#wrapper {
+    padding-bottom:20px;
+}
+footer {
+
+}
+#documentation {
+    padding:0px 40px;
+     word-wrap: break-word;
 }
