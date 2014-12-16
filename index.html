@@ -25,16 +25,21 @@
     <![endif]-->
     <link href="css/index.css" rel="stylesheet">
     <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
-  })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'http://www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-38899805-3', 'auto');
-  ga('send', 'pageview');
-
-</script>
+        ga('create', 'UA-38899805-3', 'auto');
+        ga('send', 'pageview');
+    </script>
 </head>
 
 <body id="page-top" class="index">
@@ -42,7 +47,8 @@
     <!-- Header -->
     <header>
         <div id="wrapper" class="container">
-            <div class="row"><br/>
+
+            <div class="row">
                 <div class="col-lg-12">
                     <ul class="nav intro-text">
                         <li class="hidden">
@@ -54,12 +60,13 @@
                         <li class="page-scroll">
                             <a href="#" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Documentation</a>
                             <ul class="dropdown-menu intro-text" role="menu" aria-labelledby="dropdownMenu1">
-<!--
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Getting Started</a></li><br/>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Example App</a></li><br/>
--->
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="index-api.html">JavaScript API</a></li>
-                              </ul>
+
+<!--                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Getting Started</a></li><br/>-->
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="index-api.html">JavaScript API</a>
+                                </li><br/>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="https://github.com/clickslide/NML-Starter-App" title="Dowload the example app from Github">Example App</a></li>
+
+                            </ul>
                         </li>
                         <li class="page-scroll">
                             <a href="https://github.com/clickslide/nml.js">Github</a>
@@ -70,11 +77,19 @@
                     </ul>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.gif" alt="">
-                    <div class="intro-text">
-                        <span class="name">NML</span>
+                <div class="col-xs-12">
+                    <!-- image -->
+                    <span class="col-xs-3">&nbsp;</span>
+                    <span class="img-container col-xs-6">
+                        <img class="img-responsive" src="img/profile.gif" alt="NML Logo">
+                    </span>
+                    <span class="col-xs-3">&nbsp;</span>
+                    <!-- /image -->
+
+                    <div class="intro-text col-xs-12">
+                        <!--                        <span class="name">NML</span>-->
 
                         <span class="skills">Natural Machine Language</span>
                     </div>
@@ -83,10 +98,21 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <a href="https://github.com/clickslide/NML.js/releases/tag/0.2.0" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i>Download NML.js
+                        <span class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp;Download NML.js
+                        <!--
+                        <span class="col-xs-3">&nbsp;</span>
+                        <span class="img-container col-xs-6">
+-->
+                        <!--                            <img width="200" class="img-responsive" src="http://www.seanhelvey.com/wp-content/uploads/2014/08/html5-css-javascript-logos.png" alt="NML Logo">-->
+                        <!--
+                        </span>
+                        <span class="col-xs-3">&nbsp;</span>
+-->
                     </a>
                 </div>
-            </div><hr>
+            </div>
+            <hr>
+
             <a name="about"></a>
             <div class="row black-text">
                 <div class="col-lg-4">
@@ -96,25 +122,41 @@
                     <p><a href="http://datadipity.com/register">Datadipity</a> provides a simple yet powerful JavaScript API for connecting and communicating with any type of API. Using the library we call NML.js, you can have user login, registration and api connectivity instantly in a single JavaScript file. This JavaScript can run in an app, in the browser or in the server and requires only the most well known dependency, jQuery.</p>
                 </div>
 
-                <div class="col-lg-4"><p>The JavaScript API is the core target for <a href="http://datadipity.com/register">Datadipity</a> development. <a href="http://datadipity.com/register">Datadipity</a> was built by front-end developers, for front-end developers, so more complex and fully integrated software products could be developed with simple tools such as HTML5 and JavaScript. When using JavaScript with <a href="http://datadipity.com/register">Datadipity</a>, software becomes highly scalable and very easy to maintain. The core functionality of an application built with <a href="http://datadipity.com/register">Datadipity</a> can reside in a single JavaScript file and a single HTML file.</p></div>
+                <div class="col-lg-4">
+                    <p>The JavaScript API is the core target for <a href="http://datadipity.com/register">Datadipity</a> development. <a href="http://datadipity.com/register">Datadipity</a> was built by front-end developers, for front-end developers, so more complex and fully integrated software products could be developed with simple tools such as HTML5 and JavaScript. When using JavaScript with <a href="http://datadipity.com/register">Datadipity</a>, software becomes highly scalable and very easy to maintain. The core functionality of an application built with <a href="http://datadipity.com/register">Datadipity</a> can reside in a single JavaScript file and a single HTML file.</p>
+                </div>
 
             </div>
             <hr>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <a href="https://github.com/clickslide/NML.js/releases/tag/0.2.0" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i>Download NML.js
+                        <span class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp;Download NML.js
                     </a>
                 </div>
-            </div><br/>
+            </div>
+            <br/>
+
             <div class="row">
+                <br/>
                 <div class="col-lg-12">
                     <ul class="nav intro-text">
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
                         <li class="page-scroll">
                             <a href="#home">Home</a>
                         </li>
                         <li class="page-scroll">
-                            <a href="index-api.html">API</a>
+                            <a href="#" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Documentation</a>
+                            <ul class="dropdown-menu intro-text" role="menu" aria-labelledby="dropdownMenu1">
+
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Getting Started</a></li><br/>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Example App</a></li><br/>
+
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="index-api.html">JavaScript API</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="page-scroll">
                             <a href="https://github.com/clickslide/nml.js">Github</a>
@@ -125,6 +167,7 @@
                     </ul>
                 </div>
             </div>
+
         </div>
 
     </header>

@@ -21,19 +21,55 @@ a:hover {
 }
 .btn-outline {
     margin-top: 15px;
-    border: solid 2px #693;
+    background-color:#693;
+    border:none;
+    padding:5px 20px;
     font-size: 20px;
-    color: #693;
-    background: 0 0;
+    color: #fff;
     transition: all .3s ease-in-out;
+    -moz-border-radius-topleft: 56px;
+-webkit-border-top-left-radius: 56px;
+ border-top-left-radius: 56px;
+-moz-border-radius-topright: 56px;
+-webkit-border-top-right-radius: 56px;
+border-top-right-radius: 56px;
+-moz-border-radius-bottomright: 56px;
+-webkit-border-bottom-right-radius: 56px;
+border-bottom-right-radius: 56px;
+-moz-border-radius-bottomleft: 56px;
+-webkit-border-bottom-left-radius: 56px;
+border-bottom-left-radius: 56px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
 }
 .btn-outline:hover,
 .btn-outline:focus,
 .btn-outline:active,
 .btn-outline.active {
-    border: solid 2px #693;
+/*
+    color: #693;
+    background: #fff;
+*/
+    margin-top: 15px;
+    background-color:#693;
+    border:none;
+    padding:5px 20px;
+    font-size: 20px;
     color: #fff;
-    background: #693;
+    transition: all .3s ease-in-out;
+    -moz-border-radius-topleft: 56px;
+-webkit-border-top-left-radius: 56px;
+ border-top-left-radius: 56px;
+-moz-border-radius-topright: 56px;
+-webkit-border-top-right-radius: 56px;
+border-top-right-radius: 56px;
+-moz-border-radius-bottomright: 56px;
+-webkit-border-bottom-right-radius: 56px;
+border-bottom-right-radius: 56px;
+-moz-border-radius-bottomleft: 56px;
+-webkit-border-bottom-left-radius: 56px;
+border-bottom-left-radius: 56px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
+
 }
 .center {
     text-align: center;
@@ -51,6 +87,20 @@ a:hover {
 #wrapper {
     min-width: 480px;
 }
+.intro-text img {
+    width:100%;
+    max-width:300px;
+}
+header .intro-text .skills {
+    display:block;
+    clear:both;
+}
+/*
+.dropdown-menu>li>a {
+    display:inline;
+}
+*/
+
 @media(max-width:600px) {
     .nav>li {
         position:static;
@@ -71,4 +121,12 @@ a:hover {
         margin-left:10px;
         padding-top:0;
     }
+}
+
+h3.subsection-title{
+    font-size:25px;
+}
+.tab-pane {
+    padding:0px 40px;
+     word-wrap: break-word;
 }
