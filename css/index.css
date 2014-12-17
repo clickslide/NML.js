@@ -84,9 +84,6 @@ border-bottom-left-radius: 56px;
 .dropdown-menu {
     width: 100%;
 }
-#wrapper {
-    min-width: 480px;
-}
 .intro-text img {
     width:100%;
     max-width:300px;
@@ -110,6 +107,7 @@ header .intro-text .skills {
         display:block;
         clear:both;
         text-align:left;
+        width: 100%;
     }
     .dropdown-menu {
         display:inline;
@@ -129,4 +127,16 @@ h3.subsection-title{
 .tab-pane {
     padding:0px 40px;
      word-wrap: break-word;
+}
+.img-responsive {
+    min-width:200px;
+}
+.img-container {
+    width: 100%;
+/* margin: 0 auto; */
+display: block;
+float: left;
+}
+.row {
+    margin:0;
 }
