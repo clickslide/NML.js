@@ -213,7 +213,6 @@ var NML = NML || {};
          */
         setSession: function (sess, index) {
             try{
-                console.log(JSON.stringify(window.localStorage));
                 var a = JSON.parse(window.localStorage.appconfig);
                 a[index].sessid = sess;
                 window.localStorage.appconfig = JSON.stringify(a);
@@ -289,6 +288,9 @@ var NML = NML || {};
             $.ajax({
                 type: "POST",
                 url: this.BaseUrl + "/register/doRegister.json",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 crossDomain: true,
                 data: {
                     name: userName,
@@ -340,6 +342,7 @@ var NML = NML || {};
          * @param {string} sessid - Session ID
          * @param {asyncCallback} callback - a custom function to override the onLogin method. This method will take a data object as an argument.
          * @return null
+         * @todo Make sure the server accepts POST requests and not GET requests for LOGOUT. GET is too insecure.
          * @inner
          */
         Logout: function (sessid, callback, _nml) {
@@ -390,8 +393,7 @@ var NML = NML || {};
             }
 
             var appnml = this.appnml;
-           // console.log(this);
-            //console.log("Getting: " + _nml.BaseUrl + "/login/doLogin.json");
+            // TODO: switch to POST only
             $.ajax({
                 type: "GET",
                 url: _nml.BaseUrl + "/login/doLogin.json",
@@ -401,9 +403,7 @@ var NML = NML || {};
                     password: userPassword
                 },
                 success: function (data) {
-                    console.log(data);
                     // Set Session Variable Here to maintain scope
-                    //appnml.setSession(data.session.id);
                     next(data);
                 },
                 error: function (res, status, err) {
@@ -426,17 +426,9 @@ var NML = NML || {};
          */
         onLogin: function (data) {
             // default callback for Login
-
-            console.log(JSON.stringify(data));
             if (data.success === true || data.success === "true") {
                 // save the session
-                console.log("APPNML - " + this.loginIndex);
-                //window.localStorage.sessid = data.session.id;
-                //console.log(this.app);
-                console.log("INDEX: "  + this.loginIndex);
-                console.log("SESSID: " + data.session.id);
                 this.setSession(data.session.id, this.loginIndex);
-                console.log(this.getSession(this.loginIndex));
             }
         },
 
@@ -458,13 +450,87 @@ var NML = NML || {};
             } else {
                 next = this.processPageData;
             }
-            console.log(next);
+
+            // TODO: This URL should already be set from the App
             // post request to Datadipity.com
             this.setBaseUrl(this.appconfig[index].url, "https", "datadipity.com");
 
-            $.get(
-                this.BaseUrl + "/" + pagesType + ".xml?_method=post&_action=" + action + "&PHPSESSID=" + this.getSession(index)
-            ).done(next);
+//            $.get(
+//                this.BaseUrl + "/" + pagesType + ".xml?_method=post&_action=" + action + "&PHPSESSID=" + this.getSession(index)
+//            ).done(next);
+
+            // TODO: Create action templates in NML based on available data models
+            var postUrl =  this.BaseUrl + "/" + pagesType + ".xml?_method=post&_action=" + action + "&PHPSESSID=" + this.getSession(index);
+            $.ajax({
+                type: "POST",
+                url: postUrl,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                crossDomain: true,
+                data: {
+                    _method: 'post',
+                    _action: action
+                },
+                success: function (data) {
+                    next(data, nml);
+                },
+                error: function (err) {
+                    console.log("Registration Failed!");
+                    console.log(JSON.stringify(err));
+                }
+            });
+        },
+
+        /**
+         * @description POST Filedata to Datadipity.com to trigger the "get" event for API communication. This is used when the first API in your chain requires File input. An example of such an API would be an Image Recognition API.
+         * @function getWithFile
+         * @memberOf NML
+         * @public
+         * @param {FormData} Filedata - This is the object from the File Input tag in HTML
+         * @param {asyncCallback} callback - A custom callback function to override the default. This takes an NML object as an argument.
+         * @param {string} pageTypes - basicpages, linkpages, etc.
+         * @todo Add ability to POST / PUT file to page ID to trigger update event
+         * @return null
+         * @inner
+         */
+        getWithFile: function (Filedata, callback, index, pageTypes) {
+            var next = null;
+            if (callback !== null) {
+                next = callback;
+            } else {
+                next = this.processPageData;
+            }
+            console.log(Filedata);
+
+            var postUrl =  this.BaseUrl;
+
+            // POST to the page to trigger "Add" event on API method
+            if( pageTypes !== null ){
+                postUrl += "/"+pageTypes;
+            }
+
+            // PUT to a page ID
+//            if( pageTypes !== null && pageId !== null){
+//                postUrl += "/"+pageTypes+"/"+pageId;
+//            }
+
+            postUrl += ".json?update&PHPSESSID=" + this.getSession(index);
+            $.ajax({
+                type: "POST",
+                url: postUrl,
+                crossDomain: true,
+                processData: false,
+                contentType: false,
+                data: Filedata,
+                success: function (data) {
+                    next(data);
+                },
+                error: function (err) {
+                    console.log("Registration Failed!");
+                    console.log(JSON.stringify(err));
+                }
+            });
         },
 
         /**
@@ -493,9 +559,29 @@ var NML = NML || {};
                 "https",
                 "datadipity.com"
             );
-            $.get(
-                this.BaseUrl + "/" + pageType + ".xml?_method=put&_action=" + action + "&PHPSESSID=" + this.getSession()
-            ).done(next);
+//            $.get(
+//                this.BaseUrl + "/" + pageType + ".xml?_method=put&_action=" + action + "&PHPSESSID=" + this.getSession()
+//            ).done(next);
+            var postUrl =   this.BaseUrl + "/" + pageType + ".xml?_method=put&_action=" + action + "&PHPSESSID=" + this.getSession(index);
+            $.ajax({
+                type: "POST",
+                url: postUrl,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                crossDomain: true,
+                data: {
+                    _method: 'put',
+                    _action: action
+                },
+                success: function (data) {
+                    next(data, nml);
+                },
+                error: function (err) {
+                    console.log("Registration Failed!");
+                    console.log(JSON.stringify(err));
+                }
+            });
         },
 
         /**
